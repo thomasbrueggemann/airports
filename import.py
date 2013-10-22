@@ -1,6 +1,6 @@
 from pymongo import *
 
-con = Connection("mongodb://informme.de:27017")
+con = Connection("mongodb://localhost:27017")
 db = con.airports
 airportsCol = db.airports
 
