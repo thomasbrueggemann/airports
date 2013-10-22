@@ -1,0 +1,147 @@
+<!doctype html>
+
+<html>
+<head>
+	<meta charset="utf-8" />
+    <title>Airport Finder</title>
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+
+<body>
+	<div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="">Airport Finder</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- search bar -->
+    <div class="container" style="margin-top:80px">
+    	<div class="row">
+    		<div class="col-md-12">
+    			<div class="form-group">
+                    <label for="city">Flughäfen in der Nähe von:</label>
+                    <div class="input-group">
+	                    <input type="text" id="city" placeholder="Stadt, Land, Fluss ..." class="form-control" />
+						<span class="input-group-btn">
+							<button id="search" class="btn btn-primary">Suchen</button>
+						</span>
+				    </div>
+                </div>
+    		</div>
+    	</div>
+    </div>
+
+    <!-- map --> 
+    <div class="container" style="margin-top:20px">
+    	<div class="row">
+    		<div class="col-md-12">
+    			<div id="map" style="width:100%; height:250px;"></div>
+    		</div>
+    	</div>
+    </div>
+
+    <!-- list --> 
+    <div class="container" style="margin-top:40px">
+    	<div class="row">
+    		<div class="col-md-12" id="list">
+    		</div>
+    	</div>
+    </div>
+
+    <script type="text/template" id="tplList">
+        <table class="table">
+        	<tr class="active">
+        		<td><b>Name</b></td>
+        		<td><b>Stadt</b></td>
+        		<td><b>Land</b></td>
+        		<td><b>IATA</b></td>
+        		<td><b>Entfernung</b></td>
+        	</tr>
+        	<% _.each(airports, function(a) { %>
+        	<tr>
+        		<td><%= a["Name"] %></td>
+        		<td><%= a["City"] %></td>
+        		<td><%= a["Country"] %></td>
+        		<td><%= a["IATA"] %></td>
+        		<td>ca. <%= parseInt(distance(lat, lon, a["Coordinate"][0], a["Coordinate"][1])) %> km</td>
+        	</tr>
+        	<% }); %>
+        </table>
+    </script>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB1iciCwzPIp54Q6oJLCXSy4FMBD1YkybA&sensor=false"></script>
+    <script>
+    	var lat, lon;
+
+    	function distance(lat1, lon1, lat2, lon2) {
+			var R = 6371; // Radius of the earth in km
+			var dLat = deg2rad(lat2-lat1);  // deg2rad below
+			var dLon = deg2rad(lon2-lon1); 
+			var a = 
+				Math.sin(dLat/2) * Math.sin(dLat/2) +
+				Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+				Math.sin(dLon/2) * Math.sin(dLon/2); 
+			var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+			var d = R * c; // Distance in km
+			return d;
+		}
+
+		function deg2rad(deg) {
+			return deg * (Math.PI/180)
+		}
+
+        $("#city").keypress(function(event) {
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            if(keycode == "13") {
+                $("#search").trigger("click");
+            }
+        });
+
+    	$("#search").click(function() {
+    		var city = $("#city").val();
+
+    		var geocoder = new google.maps.Geocoder();
+            geocoder.geocode({ "address": city}, function(results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    var loc = results[0].geometry.location;
+                    lat = loc.lb;
+                    lon = loc.mb;
+
+                    $.get("http://airports.thomasbrueggemann.com/closest?lat=" + loc.lb + "&lon=" + loc.mb, function(data) {
+                    	
+                    	// show list
+                    	$("#list").html(_.template($("#tplList").html(), {
+                    		"airports": data
+                    	}));
+
+                    	// show map
+                    	var mapOptions = {
+				            zoom: 9,
+				            center: loc,
+				            mapTypeId: google.maps.MapTypeId.ROADMAP,	                
+				        };
+				        var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+				        // set marker
+						for(var i in data) {
+							var d = data[i];
+
+							var marker = new google.maps.Marker({
+							    position: new google.maps.LatLng(d["Coordinate"][0], d["Coordinate"][1]),
+							    map: map,
+							    title: d["Name"],
+							    animation: google.maps.Animation.DROP,
+							});
+						}
+                    });
+                }
+            });
+    	});
+    </script>
+</body>
+</html>
