@@ -27,12 +27,8 @@ mongoClient.connect(host, function(err, db) {
 		var location = [latitude, longitude];
 
 	    // find closest airport
-	    airportsCol.find({
-	    	"Coordinate": {"$near": location}
-	    }, {"limit": 30}).toArray(function(err, airports) {
-
-		    db.close();
-		    res.send(airports);
+	    airportsCol.find({"Coordinate": {"$near": location}}, {"limit": 30}).toArray(function(err, airports) {
+		    return res.send(airports);
 	    });
 	});
 
