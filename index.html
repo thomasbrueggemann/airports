@@ -108,6 +108,7 @@
     		var geocoder = new google.maps.Geocoder();
             geocoder.geocode({ "address": city}, function(results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
+                    console.log(results);
                     var loc = results[0].geometry.location;
                     lat = loc.lb;
                     lon = loc.mb;
