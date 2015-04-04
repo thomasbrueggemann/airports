@@ -55,7 +55,8 @@ mongoClient.connect(host, function(err, db) {
 	    });
 	});
 
-	server.listen(5000, function() {
+	var port = process.env.PORT || 5000;
+	server.listen(port, function() {
 	    console.log('%s listening at %s, love & peace', server.name, server.url);
 	});
 });
