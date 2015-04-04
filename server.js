@@ -1,7 +1,6 @@
 var restify = require("restify"); 
 var mongodb = require("mongodb");
 var fs 		= require("fs");
-var db 		= require("./db");
 
 var mongoClient = mongodb.MongoClient;
 var server = restify.createServer({
@@ -9,7 +8,10 @@ var server = restify.createServer({
 });
 server.use(restify.queryParser());
 
-mongoClient.connect(db.config.host, function(err, db) {
+var host = "mongodb://pilot:aF2ChIOiQD@ds039351.mongolab.com:39351/airports";
+//var host = "mongodb://localhost:27017";
+
+mongoClient.connect(host, function(err, db) {
 
 	if(err) throw err;
 	var airportsCol = db.collection("airports");
@@ -53,7 +55,7 @@ mongoClient.connect(db.config.host, function(err, db) {
 	    });
 	});
 
-	server.listen(8041, function() {
+	server.listen(80, function() {
 	    console.log('%s listening at %s, love & peace', server.name, server.url);
 	});
 });
