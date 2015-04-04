@@ -55,7 +55,7 @@ mongoClient.connect(host, function(err, db) {
 	    });
 	});
 
-	server.listen(80, function() {
+	server.listen(5000, function() {
 	    console.log('%s listening at %s, love & peace', server.name, server.url);
 	});
 });
