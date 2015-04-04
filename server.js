@@ -9,30 +9,11 @@ var server = restify.createServer({
 server.use(restify.queryParser());
 
 var host = "mongodb://pilot:aF2ChIOiQD@ds039351.mongolab.com:39351/airports";
-//var host = "mongodb://localhost:27017";
 
 mongoClient.connect(host, function(err, db) {
 
 	if(err) throw err;
 	var airportsCol = db.collection("airports");
-
-	// home
-	server.get("/", function(req, res, next) {
-		fs.readFile("/var/www/airports/index.html", "utf8", function (err, body) {
-			if (err) throw err;
-			  
-			// set up header
-			res.writeHead(200, {
-				"Content-Length": Buffer.byteLength(body),
-				"Content-Type"	: "text/html"
-			});
-
-			// spit out html
-			res.write(body);
-			res.end();
-			return;
-		});
-	});
 
 	// closest
 	server.get("/closest", function (req, res, next) {

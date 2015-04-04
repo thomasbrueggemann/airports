@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8" />
     <title>Airport Finder</title>
-    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -71,10 +71,10 @@
         </table>
     </script>
 
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB1iciCwzPIp54Q6oJLCXSy4FMBD1YkybA&sensor=false"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
+    <script src="//maps.googleapis.com/maps/api/js?key=AIzaSyB1iciCwzPIp54Q6oJLCXSy4FMBD1YkybA&sensor=false"></script>
     <script>
     	var lat, lon;
 
@@ -112,7 +112,7 @@
                     lat = loc.lb;
                     lon = loc.mb;
 
-                    $.get("http://airports.thomasbrueggemann.com/closest?lat=" + loc.lb + "&lon=" + loc.mb, function(data) {
+                    $.get("https://fierce-earth-8619.herokuapp.com/closest?lat=" + loc.lb + "&lon=" + loc.mb, function(data) {
                     	
                     	// show list
                     	$("#list").html(_.template($("#tplList").html(), {
