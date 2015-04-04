@@ -8,6 +8,7 @@ var server = restify.createServer({
 });
 server.use(restify.queryParser());
 
+// keep cool, this is a readonly user ;-)
 var host = "mongodb://pilot:aF2ChIOiQD@ds039351.mongolab.com:39351/airports";
 
 mongoClient.connect(host, function(err, db) {
