@@ -29,3 +29,6 @@ node_modules
 # Sublime Text
 *.sublime-project
 *.sublime-workspace
+
+# Project-specific files
+db.js
