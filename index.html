@@ -114,7 +114,7 @@
                     lat = loc.k;
                     lon = loc.D;
 
-                    $.get("https://fierce-earth-8619.herokuapp.com/closest?lat=" + lat + "&lon=" + lon, function(data) {
+                    $.get("https://airportfinder.herokuapp.com/closest?lat=" + lat + "&lon=" + lon, function(data) {
                     	
                     	// show list
                     	$("#list").html(_.template($("#tplList").html(), {
