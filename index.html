@@ -112,8 +112,11 @@
                     var loc = results[0].geometry.location;
                     
                     var keys = Object.keys(loc);
+                    console.log(keys);
                     lat = loc[keys[0]];
                     lon = loc[keys[1]];
+                    
+                    console.log(lat, lon);
 
                     $.get("https://airportfinder.herokuapp.com/closest?lat=" + lat + "&lon=" + lon, function(data) {
                     	
