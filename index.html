@@ -103,16 +103,17 @@
         });
 
     	$("#search").click(function() {
-    		var city = $("#city").val();
+    		var city = $("#city").val();w
 
     		var geocoder = new google.maps.Geocoder();
-            geocoder.geocode({ "address": city}, function(results, status) {
+            	geocoder.geocode({ "address": city}, function(results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
 
                     var loc = results[0].geometry.location;
-                    console.log(loc);
-                    lat = loc.k;
-                    lon = loc.D;
+                    
+                    var keys = Object.keys(loc);
+                    lat = loc[keys[0]];
+                    lon = loc[keys[1]];
 
                     $.get("https://airportfinder.herokuapp.com/closest?lat=" + lat + "&lon=" + lon, function(data) {
                     	
